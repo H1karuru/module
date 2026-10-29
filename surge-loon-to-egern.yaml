@@ -1,5 +1,5 @@
 name: 插件模块跳转
-description: 可莉、qingr、Kelvin Lab 的安装入口跳转 Egern
+description: 可莉、qingr 跳转 Egern；Kelvin Lab 首页点击转换版
 icon: https://iili.io/BDPVJ1I.png
 homepage: https://hub.kelee.one
 body_rewrites:
@@ -12,9 +12,10 @@ body_rewrites:
       find: surge:///install-module\?url=
       replace: egern:/modules/new?url=
   - response_regex:
-      match: ^https://kelvinlab\.wuyra\.com/script\.js(?:\?.*)?$
-      find: 'url:\s*item\.surgeUrl\b'
-      replace: 'url: "egern:/modules/new?url=" + encodeURIComponent(item.surgeUrl.split("?url=")[1])'
+      match: ^https://kelvinlab\.wuyra\.com/(?:index\.html)?(?:\?.*)?$
+      find: '(?i)</body\s*>'
+      replace: >-
+        <script>(function(){if(window.__kelvinEgern)return;window.__kelvinEgern=true;document.addEventListener("click",function(e){var a=e.target.closest&&e.target.closest("a[href]");if(!a)return;var h=a.getAttribute("href");if(!/^surge:\/{2,3}install-module\?/i.test(h))return;var u=new URL(h).searchParams.get("url");if(!u)return;e.preventDefault();e.stopImmediatePropagation();location.href="egern:/modules/new?url="+encodeURIComponent(u);},true);var b=document.createElement("div");b.textContent="Egern 跳转已启用";b.style.cssText="position:fixed;right:8px;top:8px;z-index:2147483647;background:#176b44;color:white;padding:4px 8px;border-radius:8px;font-size:12px;pointer-events:none";document.body.appendChild(b);})();</script></body>
 mitm:
   hostnames:
     includes:
