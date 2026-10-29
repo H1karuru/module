@@ -1,6 +1,5 @@
 name: 插件模块跳转
-description:
- 可莉插件中心 / qingr / KelvinLab 的 Loon、Surge 模块跳转到 Egern 如不生效 清理浏览器缓存即可
+description: 可莉、qingr 跳转 Egern；Kelvin Lab 的 Surge 安装入口跳转 Egern
 icon: https://iili.io/BDPVJ1I.png
 homepage: https://hub.kelee.one
 body_rewrites:
@@ -13,16 +12,12 @@ body_rewrites:
       find: surge:///install-module\?url=
       replace: egern:///modules/new?url=
   - response_regex:
-      match: https://kelvinlab\.wuyra\.com/
+      match: ^https://kelvinlab\.wuyra\.com/script\.js(?:\?.*)?$
+      find: 'url:\s*item\.surgeUrl\b'
+      replace: 'url: item.surgeUrl.replace("surge:///install-module?url=", "egern:///modules/new?url=")'
+  - response_regex:
+      match: ^https://kelvinlab\.wuyra\.com/
       find: surge:/{2,3}install-module\?url=
-      replace: egern:///modules/new?url=
-  - response_regex:
-      match: https://kelvinlab\.wuyra\.com/
-      find: surge%3A%2F%2F%2F?install-module%3Furl%3D
-      replace: egern%3A%2F%2F%2Fmodules%2Fnew%3Furl%3D
-  - response_regex:
-      match: https://kelvinlab\.wuyra\.com/
-      find: loon://import\?plugin=
       replace: egern:///modules/new?url=
 mitm:
   hostnames:
