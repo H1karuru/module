@@ -1,24 +1,20 @@
 name: 插件模块跳转
-description: 可莉、qingr 跳转 Egern；Kelvin Lab 的 Surge 安装入口跳转 Egern
+description: 可莉、qingr、Kelvin Lab 的安装入口跳转 Egern
 icon: https://iili.io/BDPVJ1I.png
 homepage: https://hub.kelee.one
 body_rewrites:
   - response_regex:
-      match: https://(pluginhub|hub)\.kelee\.one/
+      match: ^https://(pluginhub|hub)\.kelee\.one/
       find: loon://import\?plugin=
-      replace: egern:///modules/new?url=
+      replace: egern:/modules/new?url=
   - response_regex:
-      match: https://surge\.qingr\.moe/
+      match: ^https://surge\.qingr\.moe/
       find: surge:///install-module\?url=
-      replace: egern:///modules/new?url=
+      replace: egern:/modules/new?url=
   - response_regex:
       match: ^https://kelvinlab\.wuyra\.com/script\.js(?:\?.*)?$
       find: 'url:\s*item\.surgeUrl\b'
-      replace: 'url: item.surgeUrl.replace("surge:///install-module?url=", "egern:///modules/new?url=")'
-  - response_regex:
-      match: ^https://kelvinlab\.wuyra\.com/
-      find: surge:/{2,3}install-module\?url=
-      replace: egern:///modules/new?url=
+      replace: 'url: "egern:/modules/new?url=" + encodeURIComponent(item.surgeUrl.split("?url=")[1])'
 mitm:
   hostnames:
     includes:
