@@ -1,5 +1,5 @@
-name: 插件模块跳转
-description: 可莉、qingr、Kelvin Lab 安装入口跳转 Egern
+name: Egern 安装跳转
+description: 仅支持：可莉 / qingr / Kelvin Lab
 body_rewrites:
   - response_regex:
       match: ^https://(pluginhub|hub)\.kelee\.one/
