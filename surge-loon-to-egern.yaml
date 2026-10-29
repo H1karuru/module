@@ -1,7 +1,5 @@
 name: 插件模块跳转
-description: 可莉、qingr、Kelvin Lab、Loon Plugins 安装入口跳转 Egern
-icon: https://iili.io/BDPVJ1I.png
-homepage: https://hub.kelee.one
+description: 可莉、qingr、Kelvin Lab 安装入口跳转 Egern
 body_rewrites:
   - response_regex:
       match: ^https://(pluginhub|hub)\.kelee\.one/
@@ -15,14 +13,6 @@ body_rewrites:
       match: ^https://kelvinlab\.wuyra\.com/list\.json(?:\?.*)?$
       filter: >-
         walk(if type == "string" then if startswith("surge:///install-module?url=") then "egern:/modules/new?url=" + (ltrimstr("surge:///install-module?url=") | @uri) else . end else . end)
-  - response_regex:
-      match: ^https://loon-plugins\.vercel\.app/
-      find: '(?:loon:/{2,3}|https?://(?:www\.)?nsloon\.com/openloon/)import\?plugin='
-      replace: egern:/modules/new?url=
-url_rewrites:
-  - match: '^https://(?:www\.)?nsloon\.com/openloon/import\?plugin=([^&]*devchristian1337(?:/|%2[Ff])loon-plugins[^&]*)(?:&.*)?$'
-    location: egern:/modules/new?url=$1
-    status_code: 302
 mitm:
   hostnames:
     includes:
@@ -30,6 +20,3 @@ mitm:
       - hub.kelee.one
       - surge.qingr.moe
       - kelvinlab.wuyra.com
-      - loon-plugins.vercel.app
-      - www.nsloon.com
-      - nsloon.com
