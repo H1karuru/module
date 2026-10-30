@@ -1,5 +1,15 @@
 name: Egern 安装跳转
-description: 仅支持：可莉 / qingr / Kelvin Lab
+description: 模块一键安装
+# 来源：https://raw.githubusercontent.com/ifflagged/Romeo/refs/heads/main/Modules/Surge/ddgksf2013/ScriptHub.Egern.sgmodule
+# 原作者：@ddgksf2013 @小白脸 @xream @keywos @ckyb
+rules:
+  - and:
+      match:
+        - domain_suffix:
+            match: ddgksf2013.top
+        - protocol:
+            match: quic
+      policy: REJECT
 body_rewrites:
   - response_regex:
       match: ^https://(pluginhub|hub)\.kelee\.one/
@@ -13,6 +23,20 @@ body_rewrites:
       match: ^https://kelvinlab\.wuyra\.com/list\.json(?:\?.*)?$
       filter: >-
         walk(if type == "string" then if startswith("surge:///install-module?url=") then "egern:/modules/new?url=" + (ltrimstr("surge:///install-module?url=") | @uri) else . end else . end)
+scriptings:
+  - http_response:
+      name: 墨鱼手记网页变身
+      match: ^https?://ddgksf2013\.top/$
+      script_url: https://github.com/ifflagged/Romeo/raw/main/Modules/JavaScript/ddgksf2013/ScriptHub.Egern/ddgksf2013_web.egern.js
+      body_required: true
+      max_size: 10485760
+      timeout: 600
+  - http_request:
+      name: Script Hub 脚本转换
+      match: ^https?://script\.hub/file/_start_/.+type=(?:qx-rewrite|surge-module|all-module)
+      script_url: https://github.com/ifflagged/Romeo/raw/main/Modules/JavaScript/ddgksf2013/ScriptHub.Egern/Script-Hub-Org_Rewrite-Parser.js
+      body_required: false
+      timeout: 300
 mitm:
   hostnames:
     includes:
@@ -20,3 +44,6 @@ mitm:
       - hub.kelee.one
       - surge.qingr.moe
       - kelvinlab.wuyra.com
+      - script.hub
+      - '*.script.hub'
+      - ddgksf2013.top
